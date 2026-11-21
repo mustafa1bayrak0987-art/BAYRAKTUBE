@@ -1,0 +1,45 @@
+name: Build BAYRAKTUBE IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - ana
+      - main
+
+jobs:
+  build-ipa:
+    runs-on: macos-14
+    steps:
+      - name: Depoyu cek
+        uses: actions/checkout@v4
+
+      - name: XcodeGen kur
+        run: brew install xcodegen
+
+      - name: Xcode projesini olustur
+        run: xcodegen generate
+
+      - name: iOS uygulamasini derle
+        run: |
+          xcodebuild \
+            -project BAYRAKTUBE.xcodeproj \
+            -scheme BAYRAKTUBE \
+            -sdk iphoneos \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: IPA ciktisi olustur
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/BAYRAKTUBE.app Payload/
+          zip -r BAYRAKTUBE-unsigned.ipa Payload
+
+      - name: IPA dosyasini artefakt olarak yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: BAYRAKTUBE-ipa
+          path: BAYRAKTUBE-unsigned.ipa
