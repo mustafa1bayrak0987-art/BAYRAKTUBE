@@ -1,0 +1,17 @@
+name: BAYRAKTUBE
+options:
+  bundleIdPrefix: com.bayraktube
+  deploymentTarget:
+    iOS: "16.0"
+targets:
+  BAYRAKTUBE:
+    type: application
+    platform: iOS
+    sources:
+      - path: BayraktubeApp.swift
+      - path: BayraktubeArayuz.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.bayraktube.app
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
